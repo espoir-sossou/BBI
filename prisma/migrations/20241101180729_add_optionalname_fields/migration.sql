@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `User` MODIFY `nom` VARCHAR(191) NULL,
+    MODIFY `prenom` VARCHAR(191) NULL,
+    MODIFY `role` VARCHAR(191) NULL;

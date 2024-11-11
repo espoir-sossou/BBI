@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id         Int            @id @default(autoincrement())
+  nom             String?
+  prenom          String?
+  username        String?
+  sexe            String?
+  email           String         @unique
+  password        String
+  role            String? // 'Admin', 'Agent', 'Acheteur', 'Vendeur'
+  telephone       String?
+  adresse         String?
+  dateInscription DateTime       @default(now())
+  messagesEnvoyes Message[]      @relation("MessagesEnvoyes")
+  messagesRecus   Message[]      @relation("MessagesRecus")
+  notifications   Notification[]
+  AnnonceCreatedBys        Annonce[] @relation("AnnonceCreatedBy")
+  AnnonceAssignedAdmins        Annonce[] @relation("AnnonceAssignedAdmin")
+
+  factures        Facture[]
+
+}
+model Annonce {
+  id              Int        @id @default(autoincrement())
+  titre           String?
+  description     String?
+  typePropriete   String?
+  montant         Float?
+  superficie      Float?
+  nbChambres      Int?
+  nbSalleDeDouche Int?
+  veranda         String?
+  terrasse        String?
+  cuisine         String?
+  dependance      String?
+  piscine         String?
+  garage          String?
+  localite        String?
+  titreFoncier    String?
+  localisation    String?
+  details         String?
+  typeTransaction String?
+  visite360       String?
+  dateCreation    DateTime  @default(now())
+  validee         Boolean   @default(false)
+
+  photos          Photo[]
+  video           String
+
+  created_by      Int
+  assigned_user_id Int?
+
+  user            User       @relation("AnnonceCreatedBy", fields: [created_by], references: [user_id])
+  admin           User?      @relation("AnnonceAssignedAdmin", fields: [assigned_user_id], references: [user_id])
+
+  factures        Facture[]
+}
+
+
+
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  url         String   // URL de la photo
+  annonceId   Int
+  annonce     Annonce  @relation(fields: [annonceId], references: [id])
+}
+
+
+model Message {
+  id             Int      @id @default(autoincrement())
+  contenu        String
+  dateEnvoi      DateTime @default(now())
+  expediteurId   Int
+  destinataireId Int
+  expediteur     User     @relation("MessagesEnvoyes", fields: [expediteurId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  destinataire   User     @relation("MessagesRecus", fields: [destinataireId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  contenu   String
+  type      String // Types comme 'Alerte', 'Message de Sécurité'
+  dateEnvoi DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Facture {
+  id           Int      @id @default(autoincrement())
+  montant      Float
+  dateCreation DateTime @default(now())
+  status       String   @default("en attente") // 'en attente', 'payée', 'annulée'
+  annonceId    Int
+  annonce      Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId       Int
+  user         User     @relation(fields: [userId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+}
