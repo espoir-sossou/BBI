@@ -1,0 +1,41 @@
+version: '3.8'  # Version Docker Compose
+
+services:
+  app:
+    image: node:18  # Utilisez une version Node compatible avec votre projet
+    working_dir: /app
+    volumes:
+      - ./:/app  # Montez votre code source dans le conteneur
+      - /app/node_modules  # Volume pour les dépendances de Node.js
+    environment:
+      - PORT=${PORT}  # Utilisation de la variable d'environnement
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - OTP_CODE=${OTP_CODE}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_SECRET=${GOOGLE_SECRET}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+    ports:
+      - "${PORT}:${PORT}"  # Assurez-vous que le port est défini dans le fichier .env
+    command: ["npm", "run", "start"]  # Commande pour lancer l'application en mode production
+    depends_on:
+      - db  # Démarrage du conteneur de la base de données avant l'app
+
+  db:
+    image: mysql:8  # Version MySQL
+    environment:
+      MYSQL_DATABASE: "db_aaf33d_bbi"
+      MYSQL_USER: "aaf33d_bbi"
+      MYSQL_PASSWORD: "Espoir_king0"
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql  # Pour sauvegarder les données de MySQL
+
+volumes:
+  db_data:
