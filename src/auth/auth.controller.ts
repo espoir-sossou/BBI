@@ -49,7 +49,7 @@ export class AuthController {
             telephone: user.telephone,
         };
 
-        const redirectUrl = `http://127.0.0.1:8000?email=${encodeURIComponent(userData.email)}&nom=${encodeURIComponent(userData.nom)}&prenom=${encodeURIComponent(userData.prenom)}&role=${encodeURIComponent(userData.role)}&telephone=${encodeURIComponent(userData.telephone)}`;
+        const redirectUrl = `https://votre-laravel-site.com?email=${encodeURIComponent(userData.email)}&nom=${encodeURIComponent(userData.nom)}&prenom=${encodeURIComponent(userData.prenom)}&role=${encodeURIComponent(userData.role)}&telephone=${encodeURIComponent(userData.telephone)}`;
 
         // Rediriger vers Laravel avec les données de l'utilisateur
         return res.redirect(redirectUrl);  // Effectuer la redirection vers Laravel
