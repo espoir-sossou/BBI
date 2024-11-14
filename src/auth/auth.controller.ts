@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from '@nestj
 import { SignupDto } from '../dto/user/signupDto';
 import { AuthService } from './auth.service';
 import { SigninDto } from '../dto/user/signinDto';
-import { Public } from 'src/decorator/public.decorator';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { Response } from 'express';  // Assurez-vous d'importer Response de 'express'
 import { AuthGuard } from '@nestjs/passport';
+import { Public } from 'decorator/public.decorator';
 
 
 @Controller('auth')
@@ -49,7 +49,7 @@ export class AuthController {
             telephone: user.telephone,
         };
 
-        const redirectUrl = `https://bbi-production.up.railway.app?email=${encodeURIComponent(userData.email)}&nom=${encodeURIComponent(userData.nom)}&prenom=${encodeURIComponent(userData.prenom)}&role=${encodeURIComponent(userData.role)}&telephone=${encodeURIComponent(userData.telephone)}`;
+        const redirectUrl = `https://bbi-web-production.up.railway.app?email=${encodeURIComponent(userData.email)}&nom=${encodeURIComponent(userData.nom)}&prenom=${encodeURIComponent(userData.prenom)}&role=${encodeURIComponent(userData.role)}&telephone=${encodeURIComponent(userData.telephone)}`;
 
         // Rediriger vers Laravel avec les données de l'utilisateur
         return res.redirect(redirectUrl);  // Effectuer la redirection vers Laravel

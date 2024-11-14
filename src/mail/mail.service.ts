@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
-import { SignupDto } from 'src/dto/user/signupDto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
+import { SignupDto } from 'dto/user/signupDto';
+
 
 @Injectable()
 export class MailService {

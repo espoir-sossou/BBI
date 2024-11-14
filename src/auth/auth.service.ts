@@ -1,16 +1,16 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { SignupDto } from '../dto/user/signupDto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { MailService } from 'src/mail/mail.service';
 import { SigninDto } from '../dto/user/signinDto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ResetpasswordDemandDto } from '../dto/user/resetpasswordDemandDto';
 import * as speakeasy from 'speakeasy';
 import { DeleteAccountDto } from '../dto/user/deleteAccountDto';
-import { createResponse, STATUS_CODES } from 'constant/status.constants';
-import { UserService } from 'src/user/user.service';
+import { PrismaService } from 'prisma/prisma.service';
+import { MailService } from 'mail/mail.service';
+import { UserService } from 'user/user.service';
+import { createResponse, STATUS_CODES } from '../../constant/status.constants';
 
 
 @Injectable()

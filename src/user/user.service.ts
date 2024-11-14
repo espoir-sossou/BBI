@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { MailService } from 'src/mail/mail.service';
-import { createResponse, STATUS_CODES } from 'constant/status.constants';
 import { SignupDto } from '../dto/user/signupDto';
+import { PrismaService } from 'prisma/prisma.service';
+import { MailService } from 'mail/mail.service';
+import { createResponse, STATUS_CODES } from '../../constant/status.constants';
 
 
 

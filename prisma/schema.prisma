@@ -34,52 +34,40 @@ model User {
   factures        Facture[]
 
 }
+
 model Annonce {
-  id              Int        @id @default(autoincrement())
-  titre           String?
-  description     String?
-  typePropriete   String?
-  montant         Float?
-  superficie      Float?
-  nbChambres      Int?
-  nbSalleDeDouche Int?
-  veranda         String?
-  terrasse        String?
-  cuisine         String?
-  dependance      String?
-  piscine         String?
-  garage          String?
-  localite        String?
-  titreFoncier    String?
-  localisation    String?
-  details         String?
-  typeTransaction String?
-  visite360       String?
-  dateCreation    DateTime  @default(now())
-  validee         Boolean   @default(false)
+  annonce_id        Int      @id @default(autoincrement())
+  titre             String
+  description       String
+  typePropriete     String
+  montant           Float
+  superficie        Float
+  nbChambres        Int
+  nbSalleDeDouche   Int
+  veranda           Boolean
+  terrasse          Boolean
+  cuisine           Boolean
+  dependance        Boolean
+  piscine           Boolean
+  garage            Boolean
+  localite          String
+  titreFoncier      Boolean
+  localisation      String
+  details           String?
+  typeTransaction   String // Vente ou Location
+  visite360         String?
+  dateCreation      DateTime @default(now())
+  validee           Boolean @default(false)
+  video             String?
 
-  photos          Photo[]
-  video           String
+  // Relations
+  created_by        Int
+  assigned_admin_id Int?
 
-  created_by      Int
-  assigned_user_id Int?
+  creator           User @relation("AnnonceCreatedBy", fields: [created_by], references: [user_id], onUpdate: Cascade, onDelete: Cascade)
+  assigned_admin    User? @relation("AnnonceAssignedAdmin", fields: [assigned_admin_id], references: [user_id], onUpdate: Cascade, onDelete: Cascade)
 
-  user            User       @relation("AnnonceCreatedBy", fields: [created_by], references: [user_id])
-  admin           User?      @relation("AnnonceAssignedAdmin", fields: [assigned_user_id], references: [user_id])
-
-  factures        Facture[]
 }
-
-
-
-
-model Photo {
-  id          Int      @id @default(autoincrement())
-  url         String   // URL de la photo
-  annonceId   Int
-  annonce     Annonce  @relation(fields: [annonceId], references: [id])
-}
-
 
 model Message {
   id             Int      @id @default(autoincrement())
@@ -106,7 +94,6 @@ model Facture {
   dateCreation DateTime @default(now())
   status       String   @default("en attente") // 'en attente', 'payée', 'annulée'
   annonceId    Int
-  annonce      Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId       Int
   user         User     @relation(fields: [userId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
 }

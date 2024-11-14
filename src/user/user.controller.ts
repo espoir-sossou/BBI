@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Roles } from 'src/decorator/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/guard/roles.guard';
 import { SignupDto } from '../dto/user/signupDto';
+import { RolesGuard } from 'guard/roles.guard';
+import { Roles } from 'decorator/roles.decorator';
 
 
 

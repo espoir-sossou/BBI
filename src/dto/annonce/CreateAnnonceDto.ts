@@ -1,103 +1,26 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsArray, IsBoolean, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-
-class PhotoDto {
-    @IsNotEmpty()
-    @IsString()
-    url: string;
-}
+import { IsNotEmpty, IsOptional, IsBoolean, IsString, IsNumber } from 'class-validator';
 
 export class CreateAnnonceDto {
-    @IsOptional()
-    @IsString()
-    titre: string;
-
-    @IsOptional()
-    @IsString()
-    description: string;
-
-    @IsOptional()
-    @IsString()
-    typePropriete: string;
-
-    @IsOptional()
-    @IsNumber()
-    montant: number;
-
-    @IsOptional()
-    @IsNumber()
-    superficie: number;
-
-    @IsOptional()
-    @IsNumber()
-    nbChambres: number;
-
-    @IsOptional()
-    @IsNumber()
-    nbSalleDeDouche: number;
-
-    @IsOptional()
-    @IsString()
-    veranda: string;
-
-    @IsOptional()
-    @IsString()
-    terrasse: string;
-
-    @IsOptional()
-    @IsString()
-    cuisine: string;
-
-    @IsOptional()
-    @IsString()
-    dependance: string;
-
-    @IsOptional()
-    @IsString()
-    piscine: string;
-
-    @IsOptional()
-    @IsString()
-    garage: string;
-
-    @IsOptional()
-    @IsString()
-    localite: string;
-
-    @IsOptional()
-    @IsString()
-    titreFoncier: string;
-
-    @IsOptional()
-    @IsString()
-    localisation: string;
-
-    @IsOptional()
-    @IsString()
-    details: string;
-
-    @IsOptional()
-    @IsString()
-    typeTransaction: string;
-
-    @IsOptional()
-    @IsString()
-    visite360: string;
-
-    @IsOptional()
-    @IsString()
-    video: string;
-
-    @IsOptional()
-    @IsBoolean()
-    validee: boolean;
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => PhotoDto)
-    photos: PhotoDto[];
-
-    @IsOptional()
-    @IsNumber()
-    assigned_user_id: number;
+  @IsNotEmpty() titre: string;
+  @IsNotEmpty() description: string;
+  @IsNotEmpty() typePropriete: string;
+  @IsNotEmpty() montant: number;
+  @IsNotEmpty() superficie: number;
+  @IsNotEmpty() nbChambres: number;
+  @IsNotEmpty() nbSalleDeDouche: number;
+  @IsBoolean() veranda: boolean;
+  @IsBoolean() terrasse: boolean;
+  @IsBoolean() cuisine: boolean;
+  @IsBoolean() dependance: boolean;
+  @IsBoolean() piscine: boolean;
+  @IsBoolean() garage: boolean;
+  @IsNotEmpty() localite: string;
+  @IsBoolean() titreFoncier: boolean;
+  @IsNotEmpty() localisation: string;
+  @IsOptional() details?: string;
+  @IsNotEmpty() typeTransaction: string;
+  @IsOptional() visite360?: string;
+  @IsOptional() photos?: string[];
+  @IsOptional() video?: string;
+  @IsOptional() @IsNumber() assigned_admin_id?: number;
 }
