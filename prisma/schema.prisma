@@ -24,17 +24,10 @@ model User {
   role            String? // 'Admin', 'Agent', 'Acheteur', 'Vendeur'
   telephone       String?
   adresse         String?
-  dateInscription DateTime       @default(now())
-  messagesEnvoyes Message[]      @relation("MessagesEnvoyes")
-  messagesRecus   Message[]      @relation("MessagesRecus")
-  notifications   Notification[]
-  AnnonceCreatedBys        Annonce[] @relation("AnnonceCreatedBy")
+
   AnnonceAssignedAdmins        Annonce[] @relation("AnnonceAssignedAdmin")
 
-  factures        Facture[]
-
 }
-
 model Annonce {
   annonce_id        Int      @id @default(autoincrement())
   titre             String
@@ -61,13 +54,22 @@ model Annonce {
   video             String?
 
   // Relations
-  created_by        Int
+  photos            Photo[]  // Relation avec le modèle Photo
   assigned_admin_id Int?
 
-  creator           User @relation("AnnonceCreatedBy", fields: [created_by], references: [user_id], onUpdate: Cascade, onDelete: Cascade)
   assigned_admin    User? @relation("AnnonceAssignedAdmin", fields: [assigned_admin_id], references: [user_id], onUpdate: Cascade, onDelete: Cascade)
-
 }
+
+
+model Photo {
+  photo_id   Int     @id @default(autoincrement())
+  url        String  // URL de la photo
+  annonce_id Int
+  annonce    Annonce @relation(fields: [annonce_id], references: [annonce_id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+}
+
 
 model Message {
   id             Int      @id @default(autoincrement())
@@ -75,8 +77,7 @@ model Message {
   dateEnvoi      DateTime @default(now())
   expediteurId   Int
   destinataireId Int
-  expediteur     User     @relation("MessagesEnvoyes", fields: [expediteurId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
-  destinataire   User     @relation("MessagesRecus", fields: [destinataireId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  
 }
 
 model Notification {
@@ -85,7 +86,6 @@ model Notification {
   type      String // Types comme 'Alerte', 'Message de Sécurité'
   dateEnvoi DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Facture {
@@ -95,5 +95,4 @@ model Facture {
   status       String   @default("en attente") // 'en attente', 'payée', 'annulée'
   annonceId    Int
   userId       Int
-  user         User     @relation(fields: [userId], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsBoolean, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsNumber } from 'class-validator';
 
 export class CreateAnnonceDto {
   @IsNotEmpty() titre: string;
@@ -20,7 +20,7 @@ export class CreateAnnonceDto {
   @IsOptional() details?: string;
   @IsNotEmpty() typeTransaction: string;
   @IsOptional() visite360?: string;
-  @IsOptional() photos?: string[];
+  @IsOptional() photos?: string[];  // Le tableau d'URLs des photos
   @IsOptional() video?: string;
   @IsOptional() @IsNumber() assigned_admin_id?: number;
 }

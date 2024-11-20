@@ -254,26 +254,30 @@ export class MailService {
         }
     }
 
-    async sendEmailToAdmin(subject: string, content: string) {
-        // Récupérer les emails des administrateurs
-        const adminEmails = await this.prismaService.user.findMany({
-            where: { role: 'ADMIN' },
-            select: { email: true },
-        }).then(admins => admins.map(admin => admin.email));
-
+    async sendEmailToAdmin(
+        subject: string,
+        content: string,
+        adminEmail: string,
+        announcementId: string
+      ) {
         const emailBody = `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-                <h2>${subject}</h2>
-                <p>${content}</p>
-            </div>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
+            <h2>${subject}</h2>
+            <p>${content}</p>
+            <a href="https://bbi-web-production.up.railway.app/login-page" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; border-radius: 4px;">Se connecter pour approuver ou rejeter</a>
+            <p>Une fois connecté, vous pourrez approuver ou rejeter l'annonce en cliquant sur le lien suivant:</p>
+            <a href="https://bbi-web-production.up.railway.app/annonce/aprouver${announcementId}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">Approuver l'annonce</a>
+            <a href="https://bbi-web-production.up.railway.app/annonce/rejeter${announcementId}" style="background-color: #f44336; color: white; padding: 10px 20px; text-decoration: none;">Rejeter l'annonce</a>
+          </div>
         `;
-
+    
         await (await this.transporter()).sendMail({
-            from: this.configService.get<string>('EMAIL_USER'),
-            to: adminEmails,
-            subject: subject,
-            html: emailBody,
+          from: this.configService.get<string>('EMAIL_USER'),
+          to: adminEmail,
+          subject: subject,
+          html: emailBody,
         });
-    }
+      }
+    
 
 }

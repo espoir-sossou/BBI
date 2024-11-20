@@ -56,11 +56,19 @@ export class AuthController {
     }
 
     @Post('google/logout')
-    @UseGuards(AuthGuard('jwt'))  // Protégez l'endpoint pour les utilisateurs authentifiés
+    @UseGuards(AuthGuard('jwt')) // Assurez-vous que seul un utilisateur authentifié peut accéder à cette route
     async logout(@Req() req, @Res() res: Response) {
         try {
-            // Supprimez le token côté client en envoyant une réponse sans cookie
-            res.clearCookie('jwt');  // Supprimez le cookie contenant le token (si vous l'avez stocké dans un cookie)
+            const isGoogleAuth = req.user?.isGoogleAuth; // Vérifiez si l'utilisateur est connecté via Google
+            
+            // Supprimez le token JWT du cookie, s'il y en a un
+            res.clearCookie('jwt'); 
+            
+            if (isGoogleAuth) {
+                // Gérer la déconnexion spécifique à Google si nécessaire
+                // Appel à un service pour révoquer le token Google, si nécessaire
+            }
+    
             return res.status(200).json({
                 status: '0000',
                 message: 'Déconnexion réussie',
@@ -72,5 +80,5 @@ export class AuthController {
             });
         }
     }
-
+    
 }
